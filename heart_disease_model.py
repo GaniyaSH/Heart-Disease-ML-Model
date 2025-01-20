@@ -18,38 +18,26 @@ import matplotlib.pyplot as plt
 import seaborn as sn
 
 data = pd.read_csv('framingham.csv')
-data.head()
-
 data.drop('education',axis = 1, inplace = True)
-data.head()
 
 norm_data = data[['age', 'cigsPerDay','totChol','sysBP','diaBP','BMI','heartRate','glucose']]
 norm_data.head()
 
 scaled_data = StandardScaler().fit_transform(norm_data)
-scaled_data
-
 data[['age', 'cigsPerDay','totChol','sysBP','diaBP','BMI','heartRate','glucose']] = scaled_data
-data
-
 data.dropna(inplace = True)
-data
 
 y = data['TenYearCHD']
 x = data.drop('TenYearCHD', axis = 1)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.3, random_state = 42)
 
-x_train
-
 model = LogisticRegression()
 model.fit(x_train, y_train)
 model.score(x_test, y_test)
-
 model.predict(x_test)
 
 cross_val_predict(LogisticRegression(), x, y, cv = 5)
-
 cross_val_score(LogisticRegression(), x, y, cv = 5).mean()
 
 plt.figure(figsize = (10,10))
